@@ -1,0 +1,26 @@
+﻿<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    Remote: <br>
+    <video id="remoteVideo" autoplay></video>
+    <div id="txt"></div>
+    <input type="button" value="加入" onclick="call();">
+    <script type="text/javascript">
+
+        // 与信令服务器的WebSocket连接
+        var socket = new WebSocket("ws://192.168.41.98:5079");
+
+        
+
+        // 发送offer和answer的函数，发送本地session描述
+
+        socket.onmessage = function (msg) {
+            //alert(msg.data);
+            document.getElementById("remoteVideo").src = msg.data;
+        }
+    </script>
+</body>
+</html>

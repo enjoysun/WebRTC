@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+</head>
+<body>
+    <video id="local" autoplay style="display:none;"></video>
+    <canvas id="mycanvas" width="300" height="300" ></canvas>
+    <canvas id="showimg" width="300" height="300"></canvas>
+    <input type="button" value="截图" onclick="cutpicsrc();" />
+    <script type="text/javascript">
+        //兼容浏览器的getUserMedia写法
+        var getUserMedia = (navigator.getUserMedia ||
+                            navigator.webkitGetUserMedia ||
+                            navigator.mozGetUserMedia ||
+                            navigator.msGetUserMedia);
+        getUserMedia.call(navigator, {
+            'audio': true,
+            'video': true
+        }, function (stream) {
+            document.getElementById("local").src = URL.createObjectURL(stream);
+        }, logError);
+
+        function logError(error) {
+            log(error.name + ': ' + error.message);
+        }
+
+        var ctx = document.getElementById("mycanvas").getContext("2d");
+        ctx.fillStyle = "#ccc";
+        ctx.fillRect(0, 0, 300, 300);
+        //将video画到canvas画布
+        setInterval(function cutvideotocanvas() {
+            var videoelement = document.getElementById("local");
+            ctx.drawImage(videoelement, 0, 0);
+        }, 100);
+
+
+        //实现截图
+        function cutpicsrc() {
+            var fristcan = document.getElementById("mycanvas");
+            var imgpanel = document.getElementById("showimg").getContext("2d");
+            imgpanel.fillStyle = "#ccc";
+            imgpanel.fillRect(0, 0, 300, 300);
+            imgpanel.drawImage(fristcan, 0, 0);
+        }
+    </script>
+</body>
+</html>
